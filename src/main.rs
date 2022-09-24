@@ -1,3 +1,5 @@
+use std::process::exit;
+
 use piston::{self, Button, Key, PressEvent, WindowSettings};
 use piston_window::{self, PistonWindow, *};
 
@@ -8,7 +10,12 @@ use lib::main::*;
 pub const STEP: i8 = 10;
 
 fn main() {
-    let mut window: PistonWindow = WindowSettings::new("Snake", [560, 480]).build().unwrap();
+    let mut window: PistonWindow = WindowSettings::new("Snake", [560, 480])
+        .build()
+        .unwrap_or_else(|_| {
+            println!("Failed to create window!");
+            exit(-1)
+        });
 
     let mut snake = snake::Snake::new();
     while let Some(event) = window.next() {
