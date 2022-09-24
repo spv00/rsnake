@@ -15,15 +15,15 @@ pub fn generate_snake_positions(snake: &Snake) -> Vec<(i32, i32)> {
             positions
                 .last()
                 .unwrap_or_else(|| {
-                    println!("Womething went wrong!");
-                    exit(-1)
+                    println!("Something went wrong!");
+                    exit(-1);
                 })
                 .0,
             positions
                 .last()
                 .unwrap_or_else(|| {
-                    println!("Womething went wrong!");
-                    exit(-1)
+                    println!("Something went wrong!");
+                    exit(-1);
                 })
                 .1,
         );
@@ -40,12 +40,22 @@ pub fn generate_snake_positions(snake: &Snake) -> Vec<(i32, i32)> {
     positions
 }
 
-pub fn check_collisions(snake: &Snake) -> bool {
+pub fn check_collisions(snake: &Snake, dims: (&f64, &f64)) -> bool {
     // lil bit buggy. fucking deal with it
 
     let mut positions = generate_snake_positions(snake);
+    let dims = (dims.0.round() as i32, dims.1.round() as i32);
 
     let head = positions[0];
+
+    dbg!(&dims);
+    dbg!(&head);
+    if 0 > head.0 || head.0 > dims.0 {
+        return true;
+    }
+    if 0 > head.1 || head.1 > dims.1 {
+        return true;
+    }
     positions.remove(0);
     for i in positions {
         if head == i {

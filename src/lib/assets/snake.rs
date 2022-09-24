@@ -27,7 +27,7 @@ impl Snake {
         Snake {
             segments: vec![SnakeSegment::new()],
             directions: Vec::new(),
-            head_position: (0, 0),
+            head_position: (5, 5),
         }
     }
 

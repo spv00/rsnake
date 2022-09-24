@@ -14,11 +14,13 @@ fn main() {
         .build()
         .unwrap_or_else(|_| {
             println!("Failed to create window!");
-            exit(-1)
+            exit(-1);
         });
 
     let mut snake = snake::Snake::new();
     while let Some(event) = window.next() {
+        let size = window.size();
+        let (width, height) = (size.width, size.height);
         if let Some(Button::Keyboard(key)) = event.press_args() {
             let mut handle_dir = |key: Key| {
                 let dir = match key {
@@ -41,12 +43,11 @@ fn main() {
                 Key::Space => snake.grow(),
                 _ => (),
             }
-
-            //dbg!(&snake.directions);
         }
         let positions = generate_snake_positions(&snake);
-        if check_collisions(&snake) {
-            panic!("Died");
+        if check_collisions(&snake, (&width, &height)) {
+            println!("Died");
+            exit(0);
         }
 
         // Main game drawing call
@@ -67,7 +68,5 @@ fn main() {
                 );
             }
         });
-
-        //dbg!(&snake);
     }
 }
