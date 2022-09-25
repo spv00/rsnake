@@ -26,7 +26,7 @@ impl Snake {
     pub fn new() -> Self {
         Snake {
             segments: vec![SnakeSegment::new()],
-            directions: Vec::new(),
+            directions: vec![Direction::Down],
             head_position: (5, 5),
         }
     }

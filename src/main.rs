@@ -1,4 +1,5 @@
 use std::process::exit;
+use std::time;
 
 use piston::{self, Button, Key, PressEvent, WindowSettings};
 use piston_window::{self, PistonWindow, *};
@@ -10,6 +11,9 @@ use lib::main::*;
 pub const STEP: i8 = 10;
 
 fn main() {
+    let timer = time::Instant::now();
+    let mut last_time = timer.elapsed().as_millis();
+
     let mut window: PistonWindow = WindowSettings::new("Snake", [560, 480])
         .build()
         .unwrap_or_else(|_| {
@@ -19,6 +23,19 @@ fn main() {
 
     let mut snake = snake::Snake::new();
     while let Some(event) = window.next() {
+        if timer.elapsed().as_millis() - last_time > 300 {
+            snake.step(
+                snake
+                    .directions
+                    .first()
+                    .unwrap_or_else(|| {
+                        println!("Something went wrong");
+                        exit(-1);
+                    })
+                    .clone(),
+            );
+            last_time = timer.elapsed().as_millis();
+        }
         let size = window.size();
         let (width, height) = (size.width, size.height);
         if let Some(Button::Keyboard(key)) = event.press_args() {
@@ -44,6 +61,7 @@ fn main() {
                 _ => (),
             }
         }
+
         let positions = generate_snake_positions(&snake);
         if check_collisions(&snake, (&width, &height)) {
             println!("Died");

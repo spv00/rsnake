@@ -48,8 +48,6 @@ pub fn check_collisions(snake: &Snake, dims: (&f64, &f64)) -> bool {
 
     let head = positions[0];
 
-    dbg!(&dims);
-    dbg!(&head);
     if 0 > head.0 || head.0 > dims.0 {
         return true;
     }
